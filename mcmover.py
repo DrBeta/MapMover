@@ -1,5 +1,6 @@
 import zipfile
 from guizero import App, Text, PushButton
+import os 
 import pyperclip
 app = App(title="MapMover")
 message = Text(app, text="Welcome to MapMover")
@@ -7,7 +8,9 @@ explainer = Text(app, text="Click the button and select the map .zip to install 
 def select_file():
     target = app.select_file(filetypes=[["Zip Files", "*.zip"]])
     handle = zipfile.ZipFile(target)
-    handle.extractall(r'c:\\%UserProfile%\AppData\Roaming\.minecraft\saves')
+    appdata = os.getenv('APPDATA')
+    print(appdata + r"\.minecraft\saves")
+    handle.extractall(appdata + r"\.minecraft\saves")
     app.info("Done", "Your map was successfully moved!")
 
 select_button = PushButton(app, command=select_file, text="Select Zip")
